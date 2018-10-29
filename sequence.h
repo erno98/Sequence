@@ -3,6 +3,23 @@
 // 293076
 //
 
+/***************************************************************************
+* Sequence is a single linked list, that can store parameters of any type.
+* It has two main templates: Key, and Info. Both of the parameters are used
+* in methods, and can be used variously. In other words, Sequence stores
+* pairs of elements of the constant type relation (int-int, int-string, etc.).
+* 
+* First section of the file is devoted to definitions, and the second one to
+* declarations.
+*
+* Nomenclature:
+ * head -> first element of the list
+ * Node -> structure of single element of the list
+ *         (element of Key, element of Info, and pointer to next Node)
+****************************************************************************/
+
+
+
 #ifndef SEQUENCE_SEQUENCE_H
 #define SEQUENCE_SEQUENCE_H
 
