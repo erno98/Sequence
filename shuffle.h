@@ -25,7 +25,6 @@
 #include "sequence.h"
 
 
-
 template <typename Key, typename Info>
 Sequence<Key, Info> shuffle(const Sequence<Key, Info> &S1, unsigned int start1, unsigned int length1,
                             const Sequence<Key, Info> &S2, unsigned int start2, unsigned int length2,
@@ -46,7 +45,6 @@ Sequence<Key, Info> shuffle(const Sequence<Key, Info> &S1, unsigned int start1, 
         std::string lengthException = "Count can't be equal to 0.";
         throw std::string(lengthException);
     }
-
 
     //correct input
 
@@ -75,7 +73,7 @@ Sequence<Key, Info> shuffle(const Sequence<Key, Info> &S1, unsigned int start1, 
         //put elements into sequence until there are no more to put
         //or the number of given length was fulfilled
         for(int i = 0; index2 < size2 && i < length2; i++){
-            if( S2.getNode(index2, aKey, aInfo))
+            if(S2.getNode(index2, aKey, aInfo))
                 outputSequence.pushBack(aKey, aInfo);
             index2++;
         }
