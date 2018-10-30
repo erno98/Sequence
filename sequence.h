@@ -1,13 +1,15 @@
 //
 // Created by Ernest Pokropek
+// 293076
 //
+
 
 /***************************************************************************
 * Sequence is a single linked list, that can store parameters of any type.
 * It has two main templates: Key, and Info. Both of the parameters are used
 * in methods, and can be used variously. In other words, Sequence stores
 * pairs of elements of the constant type relation (int-int, int-string, etc.).
-* 
+*
 * First section of the file is devoted to definitions, and the second one to
 * declarations.
 *
@@ -17,8 +19,6 @@
  *         (element of Key, element of Info, and pointer to next Node)
 ****************************************************************************/
 
-
-
 #ifndef SEQUENCE_SEQUENCE_H
 #define SEQUENCE_SEQUENCE_H
 
@@ -26,6 +26,8 @@
 #include <iostream>
 #include <new>
 #include <string.h>
+#include <stdlib.h>
+
 
 
 template <typename Key, typename Info>
@@ -70,6 +72,7 @@ private:
     // RETURNS:
     //    a merged Sequence<Key, Info> type object
     // PARAMETERS: Sequence<Key, Info> type object
+
 
 public:
 
@@ -116,7 +119,7 @@ public:
 *  MODIFIERS
 ****************************************************************************/
 
-/***********************************************************************
+ /***********************************************************************
  *  methods of adding to the sequence
 ************************************************************************/
 
@@ -186,25 +189,11 @@ public:
 *  OPERATIONS
 ****************************************************************************/
 
-
-    Sequence<Key, Info> shuffle(const Sequence<Key, Info> &S1, unsigned int start1, unsigned int length1,
-                                const Sequence<Key, Info> &S2, unsigned int start2, unsigned int length2,
-                                unsigned int count);
-    // shuffles the elements of two sequences
-    // PARAMETERS:
-    //    S1, S2 - given sequences
-    //    start1, start2 - starting indexes (first elements) for the sequence shuffle
-    //    length1, length2 - how many elements we take for each shuffle from S1 and S2
-    //    count - how many shuffle cycles
-    // RETURNS: a new, shuffled sequence
-    // THROWS: lengthException in case of wrong input (start, count ount of bounds)
-    /* EXAMPLE:
-     *  s1: 1 2 3 4 5 6 7 8
-     *  s2: 10 20 30 40 50 60 70 80 90 100
-     *  s3 = shuffle(s1, 2, 2, s2, 0, 3, 4);
-     *  s3: 3 4 10 20 30 5 6 40 50 60 7 8 70 80 90 100
-     */
-
+    bool getNode(unsigned int index, Key &key, Info &info) const;
+    // retrieves the given node specified by index in the list
+    // PARAMETERS: index (which element we retrieve) and key, info to store
+    //             found ones
+    // RETURNS: true if the node was found, false otherwise
 
     /***************************************************************************
     *  OPERATORS
@@ -608,6 +597,29 @@ bool Sequence<Key, Info>::clearSequence() {
 //--------------------------------------------------------------------------
 
 template<typename Key, typename Info>
+bool Sequence<Key, Info>::getNode(unsigned int index, Key &key, Info &info) const {
+
+    Node<Key, Info>* travel = head;
+    int i = 0;
+
+    while(travel != NULL){
+        if(i == index){
+            key = travel->key;
+            info = travel->info;
+            return true;
+        }
+        travel = travel->next;
+        i++;
+    }
+
+    return false;
+}
+
+
+//--------------------------------------------------------------------------
+
+
+template<typename Key, typename Info>
 bool Sequence<Key, Info>::isEmpty() {
 
     return (head == NULL);
@@ -644,61 +656,6 @@ void Sequence<Key, Info>::print() {
 }
 
 
-
-//--------------------------------------------------------------------------
-
-template<typename Key, typename Info>
-Sequence<Key, Info>
-Sequence<Key, Info>::shuffle(const Sequence<Key, Info> &S1, unsigned int start1, unsigned int length1,
-                             const Sequence<Key, Info> &S2, unsigned int start2, unsigned int length2,
-                             unsigned int count) {
-
-
-    if(start1 > length1 || start2 > length2 || S1.length() < start1 || S2.length() < start2){
-        std::string lengthException = "Start index out of bounds.";
-        throw std::string(lengthException);
-    }
-
-    if(S1.length() < length1 ||  S2.length() < length2){
-        std::string lengthException = "Length index out of bounds.";
-        throw std::string(lengthException);
-    }
-
-    if(count == 0){
-        std::string lengthException = "Count can't be equal to 0.";
-        throw std::string(lengthException);
-    }
-
-    //no input errors
-
-    Sequence<Key, Info> outputSequence;
-    Node<Key, Info> *travel1 = S1.head;
-    Node<Key, Info> *travel2 = S2.head;
-
-    //move travels to the starting indexes
-    for(int i = 0; i < start1; i++) {
-        travel1 = travel1->next;
-    }
-    for(int i=0; i < start2; i++){
-        travel2 = travel2->next;
-    }
-
-
-        for(int countNum = 0; countNum < count; countNum++){
-            for(int len1 = 0; len1 < length1; len1++){
-                if(travel1 == NULL) break;
-                outputSequence.pushBack(travel1->key, travel1->info);
-                travel1 = travel1->next;;
-            }
-            for(int len2 = 0; len2 < length2; len2++){
-                if(travel2 == NULL) break;
-                outputSequence.pushBack(travel2->key, travel2->info);
-                travel2 = travel2->next;
-            }
-        }
-
-    return outputSequence;
-}
 
 //--------------------------------------------------------------------------
 
@@ -793,6 +750,8 @@ int Sequence<Key, Info>::howMany(const Key key, const Info info) {
 
     return count;
 }
+
+//--------------------------------------------------------------------------
 
 
 #endif //SEQUENCE_SEQUENCE_H
