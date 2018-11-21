@@ -1,6 +1,5 @@
 //
 // Created by Ernest Pokropek
-// 293076
 //
 
 
